@@ -4,14 +4,36 @@ import commonjs from "rollup-plugin-commonjs";
 import { terser } from "rollup-plugin-terser";
 import livereload from "rollup-plugin-livereload";
 import chalk from "chalk";
+import { spawn } from "child_process";
+import nodePath from "path";
 
-const target = process.env.APP_TARGET_BUILD_PLATFORM;
+let target = process.env.APP_TARGET_BUILD_PLATFORM;
 const build = process.env.BUILD_APP;
 const watching = process.env.ROLLUP_WATCH;
+
+const platformShortcuts = {
+  desktop: "electron",
+  d: "electron",
+  e: "electron",
+  a: "android",
+  w: "browser",
+  b: "browser"
+};
+
+target = target.replace(/^--?/, ``);
+
+target = platformShortcuts[target];
 
 let commandToRun = `./node_modules/.bin/cordova ${
   build ? "build" : "run"
 } ${target}`;
+
+if (target === "electron" && !build) {
+  commandToRun += ` --nobuild`;
+}
+
+if (build) commandToRun += ` --release`;
+else commandToRun += ` --debug`;
 
 export default {
   input: "src/main.js",
@@ -35,7 +57,7 @@ export default {
     }),
     commonjs(),
     serve(commandToRun),
-    watching && livereload("platforms"),
+    watching && target !== "electron" && livereload("platforms"),
     build && terser()
   ],
   watch: {
@@ -44,23 +66,45 @@ export default {
 };
 
 function serve(command) {
-  const { exec } = require("child_process");
-
   let cp = null;
+  let electronCp = null;
 
   function log(data) {
-    data.split(`\n`).forEach(line => {
-      console.log(chalk.blue`[cordova]`, line);
-    });
+    data
+      .split(`\n`)
+      .filter(l => l !== "")
+      .forEach(line => {
+        console.log(chalk.blue`[cordova]`, line);
+      });
   }
 
   return {
     writeBundle() {
-      if (cp) cp.kill();
-      cp = exec(command);
+      if (cp) cp.kill("SIGINT");
+      if (electronCp) electronCp.kill("SIGINT");
+
+      cp = spawn(`cordova`, [`run`, `electron`, `--nobuild`]); //(`cordova run electron --nobuild`);
+
+      if (target === "electron") {
+        const pathToMain = nodePath.resolve(
+          `platforms/electron/www/cdv-electron-main.js`
+        );
+
+        cp.on("close", () => {
+          // Give cordova a split second to recover
+          setTimeout(() => {
+            electronCp = spawn(`./node_modules/.bin/electron`, [pathToMain]);
+          }, 50);
+        });
+      }
 
       cp.stdout.on("data", log);
       cp.stderr.on("data", log);
+
+      process.on("exit", () => {
+        if (cp) cp.kill("SIGINT");
+        if (electronCp) electronCp.kill("SIGINT");
+      });
     }
   };
 }

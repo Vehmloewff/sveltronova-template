@@ -23,7 +23,7 @@ else
 	PLATFORM="$2"
 fi
 
-echo "Building for '$PLATFORM'..."
+echo "Running for '$PLATFORM'..."
 
 if [ "$3" = "no" ]; then
 	WATCH=""
