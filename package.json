@@ -7,7 +7,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "bash command.sh build",
-    "dev": "bash command.sh dev"
+    "dev": "bash command.sh dev",
+    "setup": "npm i && bash setup.sh"
   },
   "keywords": [
     "ecosystem:cordova"
@@ -43,7 +44,8 @@
     },
     "platforms": [
       "electron",
-      "android"
+      "android",
+      "browser"
     ]
   }
 }
