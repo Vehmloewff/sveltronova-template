@@ -8,7 +8,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "bash command.sh build",
     "dev": "bash command.sh dev",
-    "setup": "npm i && bash setup.sh"
+    "setup": "rm -rf platforms plugins node_modules && npm i && bash setup.sh"
   },
   "keywords": [
     "ecosystem:cordova"
