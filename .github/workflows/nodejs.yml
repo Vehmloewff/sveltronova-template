@@ -19,6 +19,23 @@ jobs:
       - run: npm run build -- browser no-watch
         env:
           CI: true
+  androidBuild:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        node-version: [8, 10, 12]
+        os: [ubuntu-latest]
+    steps:
+      - run: git config --global core.autocrlf false
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+      - uses: vgaidarji/android-github-actions-build@v1.0.1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm run setup
+      - run: npm run build -- android no-watch
+        env:
+          CI: true
   # Lint:
   #   runs-on: ubuntu-latest
   #   steps:
