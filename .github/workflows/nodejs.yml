@@ -38,17 +38,50 @@ jobs:
               env:
                   CI: true
 
-    desktopBuild:
+    linuxBuild:
         runs-on: ${{ matrix.os }}
         strategy:
             matrix:
                 node-version: [8, 10, 12]
-                os: [ubuntu-latest, windows-latest, macos-latest]
+                os: [ubuntu-latest]
         steps:
             - run: git config --global core.autocrlf false
             - uses: actions/checkout@v1
             - uses: actions/setup-node@v1
-            - uses: vgaidarji/android-github-actions-build@v1.0.1
+              with:
+                  node-version: ${{ matrix.node-version }}
+            - run: npm run setup
+            - run: npm run build -- desktop no-watch
+              env:
+                  CI: true
+
+    macosBuild:
+        runs-on: ${{ matrix.os }}
+        strategy:
+            matrix:
+                node-version: [8, 10, 12]
+                os: [macos-latest]
+        steps:
+            - run: git config --global core.autocrlf false
+            - uses: actions/checkout@v1
+            - uses: actions/setup-node@v1
+              with:
+                  node-version: ${{ matrix.node-version }}
+            - run: npm run setup
+            - run: npm run build -- desktop no-watch
+              env:
+                  CI: true
+
+    windowsBuild:
+        runs-on: ${{ matrix.os }}
+        strategy:
+            matrix:
+                node-version: [8, 10, 12]
+                os: [windows-latest]
+        steps:
+            - run: git config --global core.autocrlf false
+            - uses: actions/checkout@v1
+            - uses: actions/setup-node@v1
               with:
                   node-version: ${{ matrix.node-version }}
             - run: npm run setup
