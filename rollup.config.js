@@ -71,6 +71,7 @@ function serve(command) {
 
   function log(data) {
     data
+      .toString()
       .split(`\n`)
       .filter(l => l !== "")
       .forEach(line => {
