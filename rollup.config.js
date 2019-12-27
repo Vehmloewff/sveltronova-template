@@ -81,14 +81,7 @@ function serve(command) {
 			if (electronCp) electronCp.kill('SIGINT');
 
 			const split = command.split(' ');
-			split.shift();
-			console.log(process.env.PATH);
-			console.log(require('fs').existsSync(`./node_modules/.bin/cordova`));
-			cp = spawn(nodePath.resolve(`node_modules/.bin/cordova`), split).on('error', function(
-				err
-			) {
-				throw err;
-			});
+			cp = spawn(split.shift(), split);
 
 			if (target === 'electron' && !build) {
 				const pathToMain = nodePath.resolve(`platforms/electron/www/cdv-electron-main.js`);
