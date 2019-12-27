@@ -22,7 +22,7 @@ const platformShortcuts = {
 
 target = target.replace(/^--?/, ``);
 
-target = platformShortcuts[target];
+target = platformShortcuts[target] || target;
 
 let commandToRun = `./node_modules/.bin/cordova ${build ? 'build' : 'run'} ${target}`;
 
@@ -80,7 +80,8 @@ function serve(command) {
 			if (cp) cp.kill('SIGINT');
 			if (electronCp) electronCp.kill('SIGINT');
 
-			cp = spawn(`cordova`, [`run`, `electron`, `--nobuild`]); //(`cordova run electron --nobuild`);
+			const split = command.split(' ');
+			cp = spawn(split.shift(), split);
 
 			if (target === 'electron') {
 				const pathToMain = nodePath.resolve(`platforms/electron/www/cdv-electron-main.js`);
