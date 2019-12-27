@@ -102,6 +102,10 @@ function serve(command) {
       cp.stdout.on("data", log);
       cp.stderr.on("data", log);
 
+      cp.on("close", code => {
+        if (code && !watching) process.exit(code);
+      });
+
       process.on("exit", () => {
         if (cp) cp.kill("SIGINT");
         if (electronCp) electronCp.kill("SIGINT");
