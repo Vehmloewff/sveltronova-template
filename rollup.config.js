@@ -81,9 +81,11 @@ function serve(command) {
 			if (electronCp) electronCp.kill('SIGINT');
 
 			const split = command.split(' ');
-			cp = spawn(split.shift(), split);
+			cp = spawn(split.shift(), split).on('error', function(err) {
+				throw err;
+			});
 
-			if (target === 'electron') {
+			if (target === 'electron' && !build) {
 				const pathToMain = nodePath.resolve(`platforms/electron/www/cdv-electron-main.js`);
 
 				cp.on('close', () => {

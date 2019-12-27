@@ -76,7 +76,7 @@ jobs:
         runs-on: ${{ matrix.os }}
         strategy:
             matrix:
-                node-version: [10]
+                node-version: [12]
                 os: [windows-latest]
         steps:
             - run: git config --global core.autocrlf false
