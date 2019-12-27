@@ -3,16 +3,16 @@ PROD_MESSAGE=""
 
 if [ "$1" = "prod" ]; then
 	ENV="$PROD"
-	echo $PROD_MESSAGE;
+	echo $PROD_MESSAGE
 elif [ "$1" = "production" ]; then
 	ENV="$PROD"
-	echo $PROD_MESSAGE;
+	echo $PROD_MESSAGE
 elif [ "$1" = "build" ]; then
 	ENV="$PROD"
-	echo $PROD_MESSAGE;
+	echo $PROD_MESSAGE
 elif [ "$1" = "b" ]; then
 	ENV="$PROD"
-	echo $PROD_MESSAGE;
+	echo $PROD_MESSAGE
 else
 	ENV=""
 fi
@@ -36,7 +36,5 @@ fi
 if [ "$WATCH" = "-w" ]; then
 	echo "Watching for changes..."
 fi
-
-
 
 ./node_modules/.bin/rollup -c $WATCH --environment="APP_TARGET_BUILD_PLATFORM:$PLATFORM$ENV"

@@ -1,0 +1,14 @@
+node_modules
+.eslintignore
+.gitignore
+.prettierignore
+LICENSE
+/dist
+/typings
+/plugins
+/platforms
+
+**/*.png
+**/*.ico
+**/*.map
+**/*.jpg

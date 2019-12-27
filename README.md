@@ -28,9 +28,9 @@ npm run dev -- <platform> # to run a specific platform
 
 The current platforms are
 
-- `browser`
-- `electron`
-- `android`
+-   `browser`
+-   `electron`
+-   `android`
 
 You can run `cordova platform add <new_platform>` to add a new platform.
 
