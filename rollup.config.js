@@ -81,7 +81,9 @@ function serve(command) {
 			if (electronCp) electronCp.kill('SIGINT');
 
 			const split = command.split(' ');
-			cp = spawn(split.shift(), split).on('error', function(err) {
+			split.shift();
+			console.log(process.env.PATH);
+			cp = spawn(`./node_modules/.bin/cordova`, split).on('error', function(err) {
 				throw err;
 			});
 
