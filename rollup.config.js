@@ -83,7 +83,10 @@ function serve(command) {
 			const split = command.split(' ');
 			split.shift();
 			console.log(process.env.PATH);
-			cp = spawn(`./node_modules/.bin/cordova`, split).on('error', function(err) {
+			console.log(require('fs').existsSync(`./node_modules/.bin/cordova`));
+			cp = spawn(nodePath.resolve(`node_modules/.bin/cordova`), split).on('error', function(
+				err
+			) {
 				throw err;
 			});
 
