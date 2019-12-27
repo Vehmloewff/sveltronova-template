@@ -4,7 +4,7 @@ import commonjs from 'rollup-plugin-commonjs';
 import { terser } from 'rollup-plugin-terser';
 import livereload from 'rollup-plugin-livereload';
 import chalk from 'chalk';
-import { spawn } from 'child_process';
+import spawn from 'cross-spawn';
 import nodePath from 'path';
 
 let target = process.env.APP_TARGET_BUILD_PLATFORM;
