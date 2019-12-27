@@ -37,9 +37,10 @@ jobs:
             - run: npm run build -- android no-watch
               env:
                   CI: true
-    # Lint:
-    #   runs-on: ubuntu-latest
-    #   steps:
-    #   - uses: actions/checkout@v1
-    #   - uses: actions/setup-node@v1
-    #   - run: 'npm i && npm run lint'
+    lint:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v1
+            - uses: actions/setup-node@v1
+            - run: npm ci
+            - run: npm run lint:test
