@@ -19,6 +19,7 @@ jobs:
       - run: npm run build -- browser no-watch
         env:
           CI: true
+
   androidBuild:
     runs-on: ${{ matrix.os }}
     strategy:
